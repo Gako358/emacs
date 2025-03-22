@@ -21,7 +21,7 @@
             (map (p: builtins.readFile p)
               (builtins.filter (p: builtins.match ".*/.*" p != null)
                 (builtins.attrNames (builtins.readDir path)))));
-        
+
         # Path dependencies
         path = with pkgs; [
           outils
@@ -37,7 +37,7 @@
           emacs-lsp-booster
           global
           universal-ctags
-	  metals
+          metals
         ];
 
         # Emacs packages
@@ -52,13 +52,16 @@
         emacsWrapped = pkgs.symlinkJoin {
           name = "emacs";
           buildInputs = [ pkgs.makeWrapper ];
-          paths = [ pkgs.emacsWithPackagesFromUsePackage {
-            defaultInitFile = true;
-            extraEmacsPackages = epkgs;
-            alwaysEnsure = false;
-            config = emacsConfig;
-            package = pkgs.emacs-pgtk;
-          }];
+          paths = [
+            pkgs.emacsWithPackagesFromUsePackage
+            {
+              defaultInitFile = true;
+              extraEmacsPackages = epkgs;
+              alwaysEnsure = false;
+              config = emacsConfig;
+              package = pkgs.emacs-pgtk;
+            }
+          ];
           postBuild = ''
             for file in $out/bin/*; do
               wrapProgram $file \

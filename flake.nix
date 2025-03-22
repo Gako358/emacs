@@ -21,18 +21,15 @@
           };
         };
 
-        # Custom packages
         customPkgs = import ./pkgs.nix { inherit pkgs; };
 
         # Function to recursively list all files in a directory
-        listFilesRecursive = path:
-          let
-            entries = builtins.attrNames (builtins.readDir path);
-            files = builtins.filter (entry: builtins.match ".*/.*" entry != null) entries;
-            subdirs = builtins.filter (entry: builtins.match ".*/" entry != null) entries;
-            subfiles = builtins.concatMap (subdir: listFilesRecursive "${path}/${subdir}") subdirs;
-          in
-          builtins.concatLists [ (map (file: "${path}/${file}") files) subfiles ];
+        listFilesRecursive = path: let
+          entries = builtins.attrNames (builtins.readDir path);
+          files = builtins.filter (entry: builtins.match ".*/.*" entry != null) entries;
+          subdirs = builtins.filter (entry: builtins.match ".*/" entry != null) entries;
+          subfiles = builtins.concatMap (subdir: listFilesRecursive "${path}/${subdir}") subdirs;
+        in builtins.concatLists [ (map (file: "${path}/${file}") files) subfiles ];
 
         # Function to concatenate files in a directory and its subdirectories
         concatFiles = path:
@@ -110,6 +107,7 @@
         };
 
         devShell = devShell;
+        defaultPackage = emacsWrapped;
       }
     );
 }

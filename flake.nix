@@ -13,6 +13,9 @@
         pkgs = import nixpkgs {
           inherit system;
           overlays = [ emacs-overlay.overlay ];
+          config = {
+            allowUnfree = true;
+          };
         };
 
         # Function to concatenate files in a directory
@@ -48,20 +51,20 @@
           concatFiles ./config
         );
 
+        # Unwrapped Emacs
+        emacsUnwrapped = pkgs.emacsWithPackagesFromUsePackage {
+          defaultInitFile = true;
+          extraEmacsPackages = epkgs;
+          alwaysEnsure = false;
+          config = emacsConfig;
+          package = pkgs.emacs-pgtk;
+        };
+
         # Wrapped Emacs
         emacsWrapped = pkgs.symlinkJoin {
           name = "emacs";
           buildInputs = [ pkgs.makeWrapper ];
-          paths = [
-            pkgs.emacsWithPackagesFromUsePackage
-            {
-              defaultInitFile = true;
-              extraEmacsPackages = epkgs;
-              alwaysEnsure = false;
-              config = emacsConfig;
-              package = pkgs.emacs-pgtk;
-            }
-          ];
+          paths = [ emacsUnwrapped ];
           postBuild = ''
             for file in $out/bin/*; do
               wrapProgram $file \
@@ -78,6 +81,7 @@
 
         devShell = pkgs.mkShell {
           buildInputs = [
+            emacsWrapped
           ];
         };
       }

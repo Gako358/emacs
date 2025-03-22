@@ -69,11 +69,11 @@ epkgs: with epkgs; [
   sql-indent # Indentation for SQL files
   tide # TypeScript Interactive Development Environment
   web-mode # Major mode for editing web templates
-  vue-ts-mode # Major mode for editing Vue3 files
+  # vue-ts-mode # Major mode for editing Vue3 files
   yaml-pro # Major mode for editing YAML files
 
   # LSP
-  eglot-booster # Eglot booster
+  # eglot-booster # Eglot booster
   eldoc-box # Display function signatures at point
 
   # Org

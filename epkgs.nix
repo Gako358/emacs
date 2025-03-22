@@ -1,5 +1,7 @@
+{ customPkgs }:
+
 epkgs: with epkgs; [
-  # Appearande
+  # Appearance
   dashboard # A startup screen extracted from Spacemacs
   kaolin-themes # A low contrast color theme for Emacs
   nerd-icons # Nerd icons for Emacs
@@ -58,10 +60,10 @@ epkgs: with epkgs; [
   s # The long lost Emacs string manipulation library
   password-store # Emacs interface for pass, the standard Unix password manager
 
-  # grammars
+  # Grammars
   treesit-grammars.with-all-grammars # Tree-sitter grammars
 
-  # Programming language packages.
+  # Programming language packages
   eglot-java # Java development environment
   haskell-ts-mode # Haskell development environment
   nix-ts-mode # Major mode for editing Nix files
@@ -69,11 +71,11 @@ epkgs: with epkgs; [
   sql-indent # Indentation for SQL files
   tide # TypeScript Interactive Development Environment
   web-mode # Major mode for editing web templates
-  # vue-ts-mode # Major mode for editing Vue3 files
+  customPkgs.vueTsMode # Major mode for editing Vue3 files
   yaml-pro # Major mode for editing YAML files
 
   # LSP
-  # eglot-booster # Eglot booster
+  customPkgs.eglotBooster # Eglot booster
   eldoc-box # Display function signatures at point
 
   # Org

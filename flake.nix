@@ -21,6 +21,8 @@
           };
         };
 
+        customPkgs = import ./pkgs.nix { inherit pkgs; };
+
         # Function to concatenate files in a directory
         concatFiles = path:
           (builtins.concatStringsSep "\n"
@@ -50,7 +52,7 @@
         ];
 
         # Emacs packages
-        epkgs = import ./epkgs.nix;
+        epkgs = import ./epkgs.nix { inherit customPkgs; };
 
         # Emacs configuration
         emacsConfig = pkgs.writeText "emacs-config.el" (

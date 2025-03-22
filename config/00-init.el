@@ -1,3 +1,5 @@
+;;; 00-init.el --- Consult configuration -*- no-byte-compile: t; lexical-binding: t; -*-
+
 (defvar minimal-emacs-ui-features '()
   "List of user interface features to disable in minimal Emacs setup.
 

@@ -25,6 +25,9 @@
               (builtins.filter (p: builtins.match ".*/.*" p != null)
                 (builtins.attrNames (builtins.readDir path)))));
 
+        # Dictionary path
+        dictionary = pkgs.writeTextDir "share/dict/words" (concatFiles ./assets/dict);
+
         # Path dependencies
         path = with pkgs; [
           outils
@@ -48,7 +51,8 @@
 
         # Emacs configuration
         emacsConfig = pkgs.writeText "emacs-config.el" (
-          concatFiles ./config
+          "(setq ispell-alternate-dictionary \"${dictionary}/share/dict/words\")\n" +
+          ";;; -*- lexical-binding: t; -*-\n" + concatFiles ./config
         );
 
         # Unwrapped Emacs
@@ -57,7 +61,7 @@
           extraEmacsPackages = epkgs;
           alwaysEnsure = false;
           config = emacsConfig;
-          package = pkgs.emacs-pgtk;
+          package = pkgs.emacs;
         };
 
         # Wrapped Emacs
@@ -68,7 +72,8 @@
           postBuild = ''
             for file in $out/bin/*; do
               wrapProgram $file \
-                --prefix PATH : ${pkgs.lib.makeBinPath path};
+                --prefix PATH : ${pkgs.lib.makeBinPath path} \
+                --set-default ASPELL_CONF "dict-dir ${pkgs.aspellWithDicts (dicts: with dicts; [ pkgs.aspellDicts.en pkgs.aspellDicts.fr pkgs.aspellDicts.en-computers ])}/lib/aspell;";
             done
           '';
         };

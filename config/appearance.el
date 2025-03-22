@@ -1,3 +1,5 @@
+;;; appearance.el --- Consult configuration -*- no-byte-compile: t; lexical-binding: t; -*-
+
 ;; Using the dashboard package with the kaolin-theme to enhance the startup experience and overall look of Emacs.
 ;; All-the-icons: Provides a rich set of icons for various file types and modes.
 (use-package all-the-icons

@@ -76,8 +76,18 @@
             for file in $out/bin/*; do
               wrapProgram $file \
                 --prefix PATH : ${pkgs.lib.makeBinPath path} \
-                --set-default ASPELL_CONF "dict-dir ${pkgs.aspellWithDicts (dicts: with dicts; [ pkgs.aspellDicts.en pkgs.aspellDicts.fr pkgs.aspellDicts.en-computers ])}/lib/aspell;";
+                --set-default ASPELL_CONF "dict-dir ${pkgs.aspellWithDicts (dicts: with dicts; [ pkgs.aspellDicts.en pkgs.aspellDicts.fr pkgs.aspellDicts.en-computers ])}/lib/aspell";
             done
+          '';
+        };
+
+        # Development Shell
+        devShell = pkgs.mkShell {
+          buildInputs = [
+            emacsWrapped
+          ];
+          shellHook = ''
+            export PATH=${pkgs.lib.makeBinPath path}:$PATH
           '';
         };
       in
@@ -87,11 +97,7 @@
           emacs = emacsWrapped;
         };
 
-        devShell = pkgs.mkShell {
-          buildInputs = [
-            emacsWrapped
-          ];
-        };
+        devShell = devShell;
       }
     );
 }
